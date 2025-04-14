@@ -1,0 +1,107 @@
+\usepackage[a4paper,top=35mm,bottom=30mm,left=30mm,right=30mm]{geometry}
+
+\title{タイトルを入力}
+\author{姓 名}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 全体
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\linespread{0.98}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 目次ページ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\contentsname}{\fontsize{20pt}{24pt}\selectfont 目次}
+\setlength{\cftaftertoctitleskip}{4pt}
+
+\renewcommand{\cftdot}{\ensuremath{\cdot}}
+\renewcommand{\cftdotsep}{1}
+
+% chapter
+\setcounter{tocdepth}{2}
+\setlength{\cftchapnumwidth}{3.9em}
+\renewcommand{\cftchappagefont}{\normalfont\strut}
+\renewcommand{\cftchapleader}{\strut\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforechapskip}{17pt}
+
+% section
+\setlength{\cftsecnumwidth}{2.2em}
+\setlength{\cftsecindent}{0em}
+\renewcommand{\cftsecpagefont}{\normalfont\strut}
+\renewcommand{\cftsecleader}{\strut\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{-1pt}
+
+% subsection
+\setlength{\cftsubsecnumwidth}{2.9em}
+\setlength{\cftsubsecindent}{1.1em}
+\renewcommand{\cftsubsecpagefont}{\normalfont\strut}
+\renewcommand{\cftsubsecleader}{\strut\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesubsecskip}{-1pt}
+
+\newcommand{\addtocnonumleader}[1]{
+  \addtocontents{toc}{\protect\vspace{17pt}}
+  \addtocontents{toc}{\noindent\textbf{\gtfamily #1}\par}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 本文ページ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% chapter
+\titleformat{\chapter}[display]
+  {\sffamily\huge\bfseries}
+  {\vspace{-12pt}\fontsize{18pt}{22pt}\selectfont\chaptertitlename\ \thechapter 章}
+  {4pt}
+  {\hspace*{0.9em}\fontsize{20pt}{24pt}\selectfont}
+\titleformat{name=\chapter,numberless}[display]
+  {\sffamily\huge\bfseries}
+  {}
+  {0pt}
+  {\vspace{-42pt}\fontsize{20pt}{24pt}\selectfont}
+\titlespacing*{\chapter}{0pt}{0pt}{6pt}
+
+% section
+\titleformat{\section}[block]
+  {\sffamily\fontsize{14pt}{18pt}\bfseries}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+
+% subsection
+\titleformat{\subsection}[block]
+  {\sffamily\fontsize{12pt}{16pt}\bfseries}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{18pt}{6pt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 参考文献
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\renewenvironment{thebibliography}[1]
+  {
+    \chapter*{\bibname}
+    \addtocnonumleader{\bibname}
+    \list{\@biblabel{\@arabic\c@enumiv}}{
+      \settowidth\labelwidth{\@biblabel{#1}}
+      \leftmargin\labelwidth
+      \advance\leftmargin\labelsep
+      \@openbib@code
+      \usecounter{enumiv}
+      \let\p@enumiv\@empty
+      \renewcommand\theenumiv{\@arabic\c@enumiv}
+    }
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty\clubpenalty
+    \widowpenalty4000
+    \sfcode`\.=\@m
+  }
+  {\def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
+   \endlist}
+\makeatother
