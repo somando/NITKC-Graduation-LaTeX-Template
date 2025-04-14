@@ -22,11 +22,11 @@ platex:
     - cp main.toc contents.toc
     - for file in *.tex; do
         if [ -f .texignore ] && grep -qx "$file" .texignore; then
-          echo "Skipping $file (listed in .texignore)"
+          echo "Skipping $file (listed in .texignore)";
         else
-          echo "Compiling $file..."
-          platex -shell-escape "$file"
-          dvipdfmx -o "outputs/${file%.tex}.pdf" "${file%.tex}.dvi"
+          echo "Compiling $file...";
+          platex -shell-escape "$file";
+          dvipdfmx -o "outputs/${file%.tex}.pdf" "${file%.tex}.dvi";
         fi
       done
     - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
