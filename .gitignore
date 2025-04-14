@@ -1,0 +1,10 @@
+# LaTeX Build Files
+*.aux
+*.log
+*.dvi
+*.toc
+
+# Output Files
+# If you want to see the output files in the remote repository, please run the CI pipeline.
+outputs/*
+**/*.pdf
