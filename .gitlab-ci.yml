@@ -1,0 +1,36 @@
+stages:
+  - compile
+
+platex:
+  image: paperist/texlive-ja:latest
+  stage: compile
+  script:
+    - FILES=$(find . -name "*.tex")
+    - if [ ! -n "$FILES" ]; then
+        echo "No tex file found. Compile skipping..."; 
+        exit 0;
+      fi
+    - mkdir outputs
+    - for file in *.tex; do
+        if grep -qx "$file" .texignore; then
+          echo "Skipping $file (listed in .texignore)";
+        else
+          echo "Compiling $file...";
+          platex -shell-escape "$file";
+        fi
+      done
+    - cp main.toc contents.toc
+    - for file in *.tex; do
+        if [ -f .texignore ] && grep -qx "$file" .texignore; then
+          echo "Skipping $file (listed in .texignore)"
+        else
+          echo "Compiling $file..."
+          platex -shell-escape "$file"
+          dvipdfmx -o "outputs/${file%.tex}.pdf" "${file%.tex}.dvi"
+        fi
+      done
+    - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
+  # artifacts:
+  #   paths:
+  #     - "output/*.pdf"
+  #   expire_in: 1 week
