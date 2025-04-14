@@ -1,0 +1,7 @@
+services:
+  platex:
+    image: paperist/texlive-ja:latest
+    container_name: platex
+    volumes:
+      - .:/workdir
+    entrypoint: /workdir/entrypoint.sh
