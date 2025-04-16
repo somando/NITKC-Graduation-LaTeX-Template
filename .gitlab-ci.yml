@@ -30,7 +30,7 @@ platex:
         fi
       done
     - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
-  # artifacts:
-  #   paths:
-  #     - "output/*.pdf"
-  #   expire_in: 1 week
+  artifacts:
+    paths:
+      - "outputs/*.pdf"
+    expire_in: 1 week
