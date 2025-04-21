@@ -1,4 +1,5 @@
 \usepackage[a4paper,top=35mm,bottom=30mm,left=30mm,right=30mm]{geometry}
+\usepackage[backend=biber,bibstyle=bibstyle,sorting=none]{biblatex}
 
 \title{タイトルを入力}
 \author{姓 名}
@@ -82,26 +83,4 @@
 % 参考文献
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\makeatletter
-\renewenvironment{thebibliography}[1]
-  {
-    \chapter*{\bibname}
-    \addtocnonumleader{\bibname}
-    \list{\@biblabel{\@arabic\c@enumiv}}{
-      \settowidth\labelwidth{\@biblabel{#1}}
-      \leftmargin\labelwidth
-      \advance\leftmargin\labelsep
-      \@openbib@code
-      \usecounter{enumiv}
-      \let\p@enumiv\@empty
-      \renewcommand\theenumiv{\@arabic\c@enumiv}
-    }
-    \sloppy
-    \clubpenalty4000
-    \@clubpenalty\clubpenalty
-    \widowpenalty4000
-    \sfcode`\.=\@m
-  }
-  {\def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
-   \endlist}
-\makeatother
+\addbibresource{references.bib}

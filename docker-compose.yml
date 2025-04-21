@@ -1,6 +1,8 @@
 services:
   platex:
-    image: paperist/texlive-ja:latest
+    build:
+      context: .
+      dockerfile: local.Dockerfile
     container_name: platex
     volumes:
       - .:/workdir

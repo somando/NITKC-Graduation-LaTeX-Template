@@ -1,0 +1,59 @@
+\ProvidesFile{bibstyle.bbx}[2025/04/21 Custom Japanese bibliography style]
+
+\RequireBibliographyStyle{numeric}
+
+\DeclareFieldFormat{url}{#1}
+\DeclareFieldFormat{urldate}{(\the\year 年\the\month 月\the\day 日 取得)}
+\DeclareFieldFormat[article,inbook,incollection,inproceedings,patent,thesis,unpublished,book,online]{title}{#1}
+\DeclareFieldFormat[article]{booktitle}{#1}
+
+\DeclareFieldFormat{pages}{pp.#1}
+
+\renewcommand*{\finentrypunct}{．}
+
+\DeclareBibliographyDriver{book}{
+  \printnames{author}%
+  \addcomma\addspace
+  \mkbibquote{\printfield{title}}%
+  \addcomma\addspace
+  \printfield{publisher}%
+  \iffieldundef{pages}{}{%
+    \addcomma\addspace
+    \printfield{pages}%
+  }%
+  \addcomma\addspace
+  \printdate%
+  \finentry
+}
+
+\DeclareBibliographyDriver{online}{
+  \printnames{author}%
+  \addcomma\addspace
+  \mkbibquote{\printfield{title}}%
+  \addcomma\addspace
+  \printfield{url}%
+  \iffieldundef{date}{}{%
+    \addcomma\addspace
+    \printdate%
+  }%
+  \iffieldundef{urldate}{}{%
+    \addcomma\addspace
+    \printurldate%
+  }%
+  \finentry
+}
+
+\DeclareBibliographyDriver{article}{
+  \printnames{author}%
+  \addcomma\addspace
+  \mkbibquote{\printfield{title}}%
+  \addcomma\addspace
+  \printfield{journal}%
+  \iffieldundef{pages}{}{%
+    \addcomma\addspace
+    \printfield{pages}%
+  }%
+  \addcomma\addspace
+  \printdate%
+  \finentry
+}

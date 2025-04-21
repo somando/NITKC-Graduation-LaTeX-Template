@@ -10,27 +10,15 @@ platex:
         echo "No tex file found. Compile skipping..."; 
         exit 0;
       fi
-    - mkdir outputs
-    - for file in *.tex; do
-        if grep -qx "$file" .texignore; then
-          echo "Skipping $file (listed in .texignore)";
-        else
-          echo "Compiling $file...";
-          platex -shell-escape "$file";
-        fi
-      done
-    - cp main.toc contents.toc
-    - for file in *.tex; do
-        if [ -f .texignore ] && grep -qx "$file" .texignore; then
-          echo "Skipping $file (listed in .texignore)";
-        else
-          echo "Compiling $file...";
-          platex -shell-escape "$file";
-          dvipdfmx -o "outputs/${file%.tex}.pdf" "${file%.tex}.dvi";
-        fi
-      done
-    - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
+    - tlmgr update --self
+    - tlmgr install biber biblatex
+    - platex -shell-escape main.tex
+    - biber main
+    - platex -shell-escape main.tex
+    - platex -shell-escape main.tex
+    - dvipdfmx -o main.pdf main.dvi
+    - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
   artifacts:
     paths:
-      - "outputs/*.pdf"
+      - "*.pdf"
     expire_in: 1 week
