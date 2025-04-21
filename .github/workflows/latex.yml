@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX files
+      - name: Check LaTeX Files Existence
         run: |
           FILES=$(find . -name "*.tex")
           if [ -z "$FILES" ]; then
@@ -25,8 +25,11 @@ jobs:
             exit 0
           fi
 
-          mkdir -p outputs
+      - name: Create Output Directory
+        run: mkdir -p outputs
 
+      - name: Compile LaTeX Files to DVI
+        run: |
           for file in *.tex; do
             if [ -f ".texignore" ] && grep -qx "$file" .texignore; then
               echo "Skipping $file (listed in .texignore)"
@@ -36,8 +39,11 @@ jobs:
             fi
           done
 
-          cp main.toc contents.toc
+      - name: Copy TOC File
+        run: cp main.toc contents.toc
 
+      - name: Convert DVI to PDF
+        run: |
           for file in *.tex; do
             if [ -f .texignore ] && grep -qx "$file" .texignore; then
               echo "Skipping $file (listed in .texignore)"
@@ -47,8 +53,9 @@ jobs:
               dvipdfmx -o "outputs/${file%.tex}.pdf" "${file%.tex}.dvi"
             fi
           done
-          
-          rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
+      
+      - name: Clean Temporary Files
+        run: rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk
 
       - name: Upload compiled PDFs as artifacts
         uses: actions/upload-artifact@v4
