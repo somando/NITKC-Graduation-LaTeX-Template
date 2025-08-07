@@ -1,15 +1,18 @@
-name: Build LaTeX Document
+name: LaTeX Compile
 
 on:
   push:
     paths:
       - '**.tex'
+      - '**.sty'
+      - '**.bbx'
       - '**.bib'
+      - '.texignore'
       - '.github/workflows/latex.yml'
   workflow_dispatch:
 
 jobs:
-  build:
+  compile:
     runs-on: ubuntu-latest
     container:
       image: paperist/texlive-ja:latest
@@ -18,41 +21,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Find .tex files
-        id: check_tex
+      - name: Check for .tex files
+        id: texcheck
         run: |
           FILES=$(find . -name "*.tex")
           if [ -z "$FILES" ]; then
-            echo "No .tex files found. Skipping compilation."
-            exit 0
+            echo "No tex file found. Compile skipping..."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Update tlmgr
-        run: tlmgr update --self
+      - name: Setup TeX tools
+        if: steps.texcheck.outputs.found == 'true'
+        run: |
+          tlmgr update --self
+          tlmgr install biber biblatex
 
-      - name: Install biber and biblatex
-        run: tlmgr install biber biblatex
+      - name: Compile LaTeX (platex + biber)
+        if: steps.texcheck.outputs.found == 'true'
+        run: |
+          platex -shell-escape main.tex
+          biber main
+          platex -shell-escape main.tex
+          platex -shell-escape main.tex
+          dvipdfmx -o main.pdf main.dvi
 
-      - name: Compile LaTeX (1st pass)
-        run: platex -shell-escape main.tex
+      - name: Clean up auxiliary files
+        if: steps.texcheck.outputs.found == 'true'
+        run: |
+          rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
 
-      - name: Run Biber
-        run: biber main
-
-      - name: Compile LaTeX (2nd pass)
-        run: platex -shell-escape main.tex
-
-      - name: Compile LaTeX (3rd pass)
-        run: platex -shell-escape main.tex
-
-      - name: Convert DVI to PDF
-        run: dvipdfmx -o main.pdf main.dvi
-
-      - name: Cleanup auxiliary files
-        run: rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload PDF artifact
+        if: steps.texcheck.outputs.found == 'true'
+        uses: actions/upload-artifact@v4
         with:
           name: compiled-pdf
           path: main.pdf
+          retention-days: 7
