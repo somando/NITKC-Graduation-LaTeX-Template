@@ -1,6 +1,10 @@
 # Graduation LaTeX Template
 
 本プロジェクトは香川高等専門学校 情報工学科における、卒業研究予稿をLaTeXで記述するテンプレートです。
+プロジェクトをフォークすることでこのテンプレートを使用して卒業研究予稿を記述することができます。
+
+> [!WARNING]
+> 卒業研究予稿のリポジトリにおける、プロジェクトの公開設定をはじめとした権限設定は十分お気をつけ下さい。
 
 ## プロジェクト構成
 
@@ -26,10 +30,6 @@
 | [`.gitlab-ci.yml`](.gitlab-ci.yml) | GitLab CIを構成するスクリプト | 基本なし |
 | [`.github/workflows/latex.yml`](.github/workflows/latex.yml) | GitHub Actionsを構成するスクリプト | 基本なし |
 
-## 記述方法
-
-記述例は[スニペット](https://gitlab.somando.jp/somando/graduation-latex-template/-/snippets)をご覧ください。
-
 ## 使い方
 
 ### ローカル環境
@@ -37,7 +37,7 @@
 以下の手順で実行するには、Docker環境がセットアップされている必要があります。
 
 1. `entrypoint.sh`に実行権限を付与する
-   
+
    以下のコマンドを実行して、実行権限を付与します。
 
    ``` bash
@@ -47,9 +47,9 @@
    この操作はプロジェクトセットアップ時にのみ必要です。
 
 2. Docker環境でLaTeXファイルをビルドする
-   
+
    以下のコマンドを実行して、`main.tex`ファイルをコンパイルします。
-   
+
    コンパイルしたアーティファクトは`outputs`ディレクトリに出力されます。
 
    ``` bash
