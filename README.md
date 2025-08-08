@@ -36,25 +36,37 @@
 
 以下の手順で実行するには、Docker環境がセットアップされている必要があります。
 
-1. `entrypoint.sh`に実行権限を付与する
+#### 1. (Windows(WSLを除く)のみ)Gitでの改行コードの変換を無効化する
 
-   以下のコマンドを実行して、実行権限を付与します。
+`entrypoint.sh`の改行コードがCRLFになっている場合、ENTRYPOINT処理が動作しません。
 
-   ``` bash
-   chmod +x entrypoint.sh
-   ```
+以下のコマンドを実行して、改行コードの変換を無効化します。
 
-   この操作はプロジェクトセットアップ時にのみ必要です。
+``` powershell
+git config --global core.autocrlf false
+```
 
-2. Docker環境でLaTeXファイルをビルドする
+#### 2. `entrypoint.sh`に実行権限を付与する
 
-   以下のコマンドを実行して、`main.tex`ファイルをコンパイルします。
+以下のコマンドを実行して、実行権限を付与します。
 
-   コンパイルしたアーティファクトは`outputs`ディレクトリに出力されます。
+##### Mac / Linux(WSLを含む)の場合
 
-   ``` bash
-   docker compose up
-   ```
+``` bash
+chmod +x entrypoint.sh
+```
+
+この操作はプロジェクトセットアップ時にのみ必要です。
+
+#### 3. Docker環境でLaTeXファイルをビルドする
+
+以下のコマンドを実行して、`main.tex`ファイルをコンパイルします。
+
+コンパイルしたアーティファクトは`outputs`ディレクトリに出力されます。
+
+``` bash
+docker compose up
+```
 
 Dockerを使用せず、LaTeXの実行環境でコンパイルすることも可能です。
 
