@@ -3,7 +3,5 @@ services:
     build:
       context: .
       dockerfile: local.Dockerfile
-    container_name: platex
     volumes:
       - .:/workdir
-    entrypoint: /workdir/entrypoint.sh
