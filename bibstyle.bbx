@@ -3,11 +3,13 @@
 \RequireBibliographyStyle{numeric}
 
 \DeclareFieldFormat{url}{#1}
-\DeclareFieldFormat{urldate}{(\the\year 年\the\month 月\the\day 日 取得)}
 \DeclareFieldFormat[article,inbook,incollection,inproceedings,patent,thesis,unpublished,book,online]{title}{#1}
 \DeclareFieldFormat[article]{booktitle}{#1}
 
 \DeclareFieldFormat{pages}{pp.#1}
+\DeclareFieldFormat*{publisher}{#1}
+\DeclareFieldFormat*{journal}{#1}
+\DeclareFieldFormat*{journaltitle}{#1}
 
 \renewcommand*{\finentrypunct}{．}
 
@@ -16,7 +18,7 @@
   \addcomma\addspace
   \mkbibquote{\printfield{title}}%
   \addcomma\addspace
-  \printfield{publisher}%
+  \printlist{publisher}%
   \iffieldundef{pages}{}{%
     \addcomma\addspace
     \printfield{pages}%
@@ -32,13 +34,9 @@
   \mkbibquote{\printfield{title}}%
   \addcomma\addspace
   \printfield{url}%
-  \iffieldundef{date}{}{%
+  \iffieldundef{urlyear}{}{%
     \addcomma\addspace
-    \printdate%
-  }%
-  \iffieldundef{urldate}{}{%
-    \addcomma\addspace
-    \printurldate%
+    (\thefield{urlyear}/\two@digits{\thefield{urlmonth}}/\two@digits{\thefield{urlday}}閲覧)%
   }%
   \finentry
 }
@@ -48,7 +46,7 @@
   \addcomma\addspace
   \mkbibquote{\printfield{title}}%
   \addcomma\addspace
-  \printfield{journal}%
+  \printfield{journaltitle}%
   \iffieldundef{pages}{}{%
     \addcomma\addspace
     \printfield{pages}%

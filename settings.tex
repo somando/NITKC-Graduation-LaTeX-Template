@@ -1,4 +1,4 @@
-\usepackage[a4paper,top=35mm,bottom=30mm,left=30mm,right=30mm]{geometry}
+\usepackage[a4paper,top=35mm,bottom=30mm,left=27.5mm,right=32.5mm]{geometry}
 \usepackage[backend=biber,bibstyle=bibstyle,sorting=none]{biblatex}
 
 \title{タイトルを入力}
@@ -6,10 +6,46 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 文字数・行数設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\def\charparline#1{
+  \newcounter{mpl}
+  \setcounter{mpl}{#1}
+  \@tempdima=\linewidth
+  \advance\@tempdima by-\value{mpl}zw
+  \addtocounter{mpl}{-1}
+  \divide\@tempdima by \value{mpl}
+  \advance\kanjiskip by\@tempdima
+  \advance\parindent by\@tempdima
+}
+\makeatother
+\def\linesparpage#1{
+  \baselineskip=\textheight
+  \divide\baselineskip by #1
+}
+
+\AtBeginDocument{
+  \charparline{44}
+  \linesparpage{43}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 全体
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \linespread{0.98}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 数式・図表番号
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,16 +90,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % chapter
-\titleformat{\chapter}[display]
-  {\sffamily\huge\bfseries}
-  {\vspace{-12pt}\fontsize{18pt}{22pt}\selectfont\chaptertitlename\ \thechapter 章}
-  {4pt}
-  {\hspace*{0.9em}\fontsize{20pt}{24pt}\selectfont}
-\titleformat{name=\chapter,numberless}[display]
-  {\sffamily\huge\bfseries}
+\titleformat{\chapter}[hang]
+  {\sffamily\bfseries}
+  {\fontsize{18pt}{22pt}\selectfont\chaptertitlename\thechapter 章}
+  {0.5em}
+  {\fontsize{20pt}{24pt}\selectfont}
+\titleformat{name=\chapter,numberless}[block]
+  {\sffamily\bfseries}
   {}
   {0pt}
-  {\vspace{-42pt}\fontsize{20pt}{24pt}\selectfont}
+  {\fontsize{20pt}{24pt}\selectfont}
 \titlespacing*{\chapter}{0pt}{0pt}{6pt}
 
 % section
