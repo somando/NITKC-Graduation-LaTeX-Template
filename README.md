@@ -19,46 +19,34 @@
 | [`acknowledgment.tex`](acknowledgment.tex) | 謝辞ページ | 謝辞の記述 |
 | [`references.tex`](references.tex) | 参考文献ページ | 基本なし |
 | [`references.bib`](references.bib) | 参考文献の管理 | 参考文献の追加 |
-| [`settings.tex`](settings.tex) | それぞれの要素の調整など設定事項 | 基本なし |
+| [`settings.tex`](settings.tex) | それぞれの要素の調整など設定事項 | タイトル及び著者の編集 |
 | [`bibstyle.bbx`](bibstyle.bbx) | BiBLaTeXにおける調整 | 基本なし |
 | [`outputs/`](outputs/) | PDFファイルの出力先 | ローカル実行時に自動編集 |
 | [`.gitignore`](.gitignore) | Git管理の対象外ファイルの指定 | 基本なし |
 | [`local.Dockerfile`](local.Dockerfile) | ローカル環境におけるDockerイメージを構成する | 基本なし |
 | [`docker-compose.yml`](docker-compose.yml) | ローカル環境におけるDockerコンテナを構成する | 基本なし |
 | [`entrypoint.sh`](entrypoint.sh) | Docker環境にて実行する処理を記述 | 基本なし |
-| [`.texignore`](.texignore) | 自動コンパイル対象外ファイルの指定 | 基本なし |
 | [`.gitlab-ci.yml`](.gitlab-ci.yml) | GitLab CIを構成するスクリプト | 基本なし |
 | [`.github/workflows/latex.yml`](.github/workflows/latex.yml) | GitHub Actionsを構成するスクリプト | 基本なし |
+| [`.editorconfig`](.editorconfig) | エディタ設定 | 基本なし |
+| [`.vscode/extensions.json`](.vscode/extensions.json) | このプロジェクトの推奨拡張機能 | 基本なし |
+| [`.vscode/settings.json`](.vscode/settings.json) | 自動コンパイルの設定 | 基本なし |
 
 ## 使い方
+
+本リポジトリの使用時は以下の拡張機能をインストールすることを推奨します。
+
+- [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave&ssr=false#review-details)
+- [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [vscode-pdf](https://marketplace.visualstudio.com/items?itemName=tomoki1207.pdf)
 
 ### ローカル環境
 
 以下の手順で実行するには、Docker環境がセットアップされている必要があります。
 
-#### 1. (Windows(WSLを除く)のみ)Gitでの改行コードの変換を無効化する
+Dockerを使用せず、LaTeXの実行環境でコンパイルすることも可能です。
 
-`entrypoint.sh`の改行コードがCRLFになっている場合、ENTRYPOINT処理が動作しません。
-
-以下のコマンドを実行して、改行コードの変換を無効化します。
-
-``` powershell
-git config --global core.autocrlf false
-```
-
-#### 2. `entrypoint.sh`に実行権限を付与する
-
-以下のコマンドを実行して、実行権限を付与します。
-
-##### Mac / Linux(WSLを含む)の場合
-
-``` bash
-chmod +x entrypoint.sh
-```
-
-この操作はプロジェクトセットアップ時にのみ必要です。
-
-#### 3. Docker環境でLaTeXファイルをビルドする
+#### Docker環境でLaTeXファイルビルド
 
 以下のコマンドを実行して、`main.tex`ファイルをコンパイルします。
 
@@ -68,7 +56,9 @@ chmod +x entrypoint.sh
 docker compose up
 ```
 
-Dockerを使用せず、LaTeXの実行環境でコンパイルすることも可能です。
+初回実行時にはイメージのビルドを行うため、数分ほど時間がかかります。
+
+[Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave&ssr=false#review-details) がインストールされている場合、保存時に自動でコンパイルが行われます。
 
 ### リモート環境
 
