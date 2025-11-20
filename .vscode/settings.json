@@ -1,0 +1,12 @@
+{
+  "emeraldwalk.runonsave": {
+    "showElapsed": true,
+    "autoClearConsole": true,
+    "commands": [
+      {
+        "match": ".tex",
+        "cmd": "docker compose up"
+      }
+    ]
+  }
+}
