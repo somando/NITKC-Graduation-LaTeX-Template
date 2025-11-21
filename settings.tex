@@ -11,7 +11,7 @@
 
 \makeatletter
 \def\charparline#1{
-  \newcounter{mpl}
+  \@ifundefined{c@mpl}{\newcounter{mpl}}{}
   \setcounter{mpl}{#1}
   \@tempdima=\linewidth
   \advance\@tempdima by-\value{mpl}zw
@@ -27,8 +27,13 @@
 }
 
 \AtBeginDocument{
-  \charparline{44}
-  \linesparpage{43}
+  \charparline{40}
+  \linesparpage{30}
+}
+
+\AtBeginBibliography{
+  \charparline{40}
+  \linesparpage{30}
 }
 
 
