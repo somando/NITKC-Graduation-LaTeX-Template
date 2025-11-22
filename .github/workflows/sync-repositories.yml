@@ -1,0 +1,44 @@
+name: Sync to GitLab
+
+on:
+  push:
+    branches: ["*"]
+    tags: ["*"]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        name: [gitlab-saas, gitlab-self-managed]
+        include:
+          - name: gitlab-saas
+            token_secret: GITLAB_SAAS_TOKEN
+            repo_secret: GITLAB_SAAS_REPO
+          - name: gitlab-self-managed
+            token_secret: GITLAB_SELF_MANAGED_TOKEN
+            repo_secret: GITLAB_SELF_MANAGED_REPO
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync to GitLab (${{ matrix.name }})
+        env:
+          GITLAB_TOKEN: ${{ secrets[matrix.token_secret] }}
+          GITLAB_REPO:  ${{ secrets[matrix.repo_secret] }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${GITLAB_TOKEN}" || -z "${GITLAB_REPO}" ]]; then
+            echo "GitLab secrets are not set for ${{ matrix.name }}. Skipping."
+            exit 0
+          fi
+
+          git remote remove gitlab 2>/dev/null || true
+          git remote add gitlab "${GITLAB_REPO}"
+          git push --force --prune --all "https://oauth2:${GITLAB_TOKEN}@${GITLAB_REPO#https://}"
+          git push --force --tags "https://oauth2:${GITLAB_TOKEN}@${GITLAB_REPO#https://}"
