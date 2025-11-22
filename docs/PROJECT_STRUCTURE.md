@@ -33,9 +33,27 @@ LaTeXの設定や構成を管理するファイルです。通常は編集不要
 | ファイル名 | 概要 | 編集タイミング |
 | --- | --- | --- |
 | [`outputs/`](../outputs/) | PDFファイルの出力先 | ローカル実行時に自動編集 |
+| [`.latexmkrc`](../.latexmkrc) | latexmkの設定ファイル（platex、bibtex、biberなどの設定） | 基本なし |
 | [`local.Dockerfile`](../local.Dockerfile) | ローカル環境におけるDockerイメージを構成する | 基本なし |
 | [`docker-compose.yml`](../docker-compose.yml) | ローカル環境におけるDockerコンテナを構成する | 基本なし |
 | [`entrypoint.sh`](../entrypoint.sh) | Docker環境にて実行する処理を記述 | 基本なし |
+
+## 生成ファイル（ビルド時に自動生成）
+
+LaTeXのビルド時に自動生成されるファイルです。`.gitignore`でGit管理から除外されています。通常は編集不要で、ビルド時に自動的に生成・更新されます。
+
+| ファイル拡張子 | 概要 |
+| --- | --- |
+| `.aux` | LaTeXの補助ファイル（相互参照情報など） |
+| `.log` | ビルド時のログファイル |
+| `.bbl` | 参考文献リスト（bibtex/biberで生成） |
+| `.bcf` | Biber制御ファイル |
+| `.blg` | BibTeX/Biberのログファイル |
+| `.dvi` | Device Independent形式の中間ファイル |
+| `.toc` | 目次ファイル |
+| `.fdb_latexmk` | latexmkのデータベースファイル |
+| `.fls` | latexmkのファイルリスト |
+| `.run.xml` | Biberの実行ファイル |
 
 ## CI/CD設定
 
@@ -63,7 +81,7 @@ LaTeXの設定や構成を管理するファイルです。通常は編集不要
 
 | ファイル名 | 概要 | 編集タイミング |
 | --- | --- | --- |
-| [`.gitignore`](../.gitignore) | Git管理の対象外ファイルの指定 | 基本なし |
+| [`.gitignore`](../.gitignore) | Git管理の対象外ファイルの指定（LaTeXのビルドファイルや出力PDFなど） | 基本なし |
 | [`.editorconfig`](../.editorconfig) | エディタ設定 | 基本なし |
 | [`.vscode/extensions.json`](../.vscode/extensions.json) | このプロジェクトの推奨拡張機能 | 基本なし |
 | [`.vscode/settings.json`](../.vscode/settings.json) | 自動コンパイルの設定 | 基本なし |
