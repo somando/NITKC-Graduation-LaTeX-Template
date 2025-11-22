@@ -4,20 +4,24 @@ stages:
 platex:
   image: paperist/texlive-ja:latest
   stage: compile
+  rules:
+    - changes:
+        - "**/*.tex"
+        - "**/*.sty"
+        - "**/*.bbx"
+        - "**/*.bib"
+        - ".gitlab-ci.yml"
+      when: on_success
+    - when: never
   script:
     - FILES=$(find . -name "*.tex")
     - if [ ! -n "$FILES" ]; then
-        echo "No tex file found. Compile skipping..."; 
+        echo "No tex file found. Compile skipping...";
         exit 0;
       fi
-    - tlmgr update --self
-    - tlmgr install biber biblatex
-    - platex -shell-escape main.tex
-    - biber main
-    - platex -shell-escape main.tex
-    - platex -shell-escape main.tex
-    - dvipdfmx -o main.pdf main.dvi
-    - rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
+    - tlmgr install latexmk biblatex biber
+    - latexmk -pdfdvi -interaction=nonstopmode -shell-escape main.tex
+    - latexmk -c main.tex
   artifacts:
     paths:
       - "*.pdf"

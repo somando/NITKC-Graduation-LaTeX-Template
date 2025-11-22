@@ -1,23 +1,46 @@
 #!/bin/sh
 
-set -e
+set -eu
 
-FILES=$(find . -name "*.tex")
+OUT_DIR="outputs"
+TARGET_TEX="${1:-main.tex}"
+JOBNAME="$(basename "$TARGET_TEX" .tex)"
 
+FILES=$(find . -name "*.tex" -type f)
 if [ -z "$FILES" ]; then
-  echo "No tex file found. Compile skipping..."
+  echo "[INFO] No tex file found. Compile skipping..."
   exit 0
 fi
 
-mkdir -p outputs
+if [ ! -f "$TARGET_TEX" ]; then
+  if [ "$TARGET_TEX" = "main.tex" ]; then
+    FALLBACK=$(find . -maxdepth 1 -name "*.tex" -type f | head -n 1 || true)
+    if [ -n "$FALLBACK" ]; then
+      TARGET_TEX="$FALLBACK"
+      JOBNAME="$(basename "$TARGET_TEX" .tex)"
+      echo "[WARN] main.tex not found. Fallback to: $TARGET_TEX"
+    else
+      echo "[ERROR] main.tex not found and no top-level tex files to compile."
+      exit 1
+    fi
+  else
+    echo "[ERROR] Target tex not found: $TARGET_TEX"
+    exit 1
+  fi
+fi
 
-platex -shell-escape main.tex
+echo "[INFO] Compile target: $TARGET_TEX (jobname: $JOBNAME)"
 
-biber main
+latexmk -pdfdvi -interaction=nonstopmode -shell-escape "$TARGET_TEX"
 
-platex -shell-escape main.tex
+if [ ! -f "${JOBNAME}.pdf" ]; then
+  echo "[ERROR] PDF not generated."
+  exit 1
+fi
 
-platex -shell-escape main.tex
-dvipdfmx -o outputs/main.pdf main.dvi
+mkdir -p "$OUT_DIR"
+mv -f "${JOBNAME}.pdf" "$OUT_DIR/${JOBNAME}.pdf"
+echo "[INFO] Output PDF: $OUT_DIR/${JOBNAME}.pdf"
 
-rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
+latexmk -c "$TARGET_TEX"
+echo "[INFO] Clean done."

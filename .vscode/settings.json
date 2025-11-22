@@ -4,7 +4,11 @@
     "autoClearConsole": true,
     "commands": [
       {
-        "match": ".tex",
+        "match": "(.latexmkrc|docker-compose.yml|local.Dockerfile)$",
+        "cmd": "docker compose build"
+      },
+      {
+        "match": "\\.(tex|bib|sty|bbx)$",
         "cmd": "docker compose up"
       }
     ]

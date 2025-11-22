@@ -2,8 +2,7 @@ FROM paperist/texlive-ja:latest
 
 WORKDIR /workdir
 
-RUN tlmgr update --self && \
-  tlmgr install biber biblatex
+RUN tlmgr install latexmk biblatex biber
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 

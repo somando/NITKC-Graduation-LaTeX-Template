@@ -7,7 +7,6 @@ on:
       - '**.sty'
       - '**.bbx'
       - '**.bib'
-      - '.texignore'
       - '.github/workflows/latex.yml'
   workflow_dispatch:
 
@@ -35,22 +34,17 @@ jobs:
       - name: Setup TeX tools
         if: steps.texcheck.outputs.found == 'true'
         run: |
-          tlmgr update --self
-          tlmgr install biber biblatex
+          tlmgr install latexmk biblatex biber
 
-      - name: Compile LaTeX (platex + biber)
+      - name: Compile LaTeX with latexmk
         if: steps.texcheck.outputs.found == 'true'
         run: |
-          platex -shell-escape main.tex
-          biber main
-          platex -shell-escape main.tex
-          platex -shell-escape main.tex
-          dvipdfmx -o main.pdf main.dvi
+          latexmk -pdfdvi -interaction=nonstopmode -shell-escape main.tex
 
       - name: Clean up auxiliary files
         if: steps.texcheck.outputs.found == 'true'
         run: |
-          rm -f *.aux *.log *.dvi *.toc *.out *.fls *.fdb_latexmk *.bbl *.bcf *.blg *.run.xml
+          latexmk -c main.tex
 
       - name: Upload PDF artifact
         if: steps.texcheck.outputs.found == 'true'
