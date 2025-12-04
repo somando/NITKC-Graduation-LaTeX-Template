@@ -9,6 +9,7 @@
 *.run.xml
 *.fdb_latexmk
 *.fls
+*-SAVE-ERROR
 
 # Output Files
 # If you want to see the output files in the remote repository, please run the CI pipeline.
