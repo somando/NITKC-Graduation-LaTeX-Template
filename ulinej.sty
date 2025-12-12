@@ -1,0 +1,45 @@
+%ulinej.sty v1.00			by 21M
+% This file is in the public domain.
+%%%
+% Usage: \ulinej{文章}
+% ただし空白、英単語、コマンドと引数など(一般に、その中が分断されたり
+% 改行が入ったりしては困るもの)は「{ }」で括らなければならない。
+% 例 \ulinej{あいうえお{$\cal B$}かきくけこ{foo}{ }{bar}}
+%%%
+\ifnum\the\catcode`\@=11 \let\ul@insty\relax \else \makeatletter \fi
+%-----------
+\newcount\ul@curpos \newbox\ul@tmpbox
+\newdimen\ul@skipwidth \newdimen\ul@depth \newdimen\ul@height
+\def\ulinej#1{%
+	\begingroup \ul@curpos=0\setbox\ul@tmpbox=\hbox{#1}%
+	\ul@depth=\the\dp\ul@tmpbox \advance\ul@depth by0.16em%
+	\@ulinej#1\@enduline \endgroup
+}
+\def\@putulj#1#2{%
+	\ul@height=-#1\advance\ul@height by0.4pt%
+	\ifdim#2>0pt \@@putulj{#1}{#2}\else \ifdim#2<0pt\hskip#2\fi\fi%
+}
+\def\@@putulj#1#2{\leaders\hrule depth#1 height\ul@height \hskip#2\relax}
+\def\@ulinej#1#2{%
+	\setbox\ul@tmpbox=\hbox{#1}\advance\ul@curpos by1
+	\ifnum\ul@curpos=1
+		\mbox{#1}\llap{\@putulj\ul@depth{\the\wd\ul@tmpbox}}%
+	\else
+		\linebreak[0]\@putulj{\ul@depth}{\ul@skipwidth}%
+		\ifdim\ul@skipwidth<0pt\relax\else
+		 \@@putulj{\ul@depth}{0pt plus.03zw}\hskip0pt\linebreak[0]\fi
+		\mbox{\@@putulj\ul@depth{\the\wd\ul@tmpbox}\llap{#1}}%
+	\fi
+	\ifx#2\@enduline
+		\let\ul@next\@gobble
+	\else
+		\let\ul@next\@ulinej
+		\setbox\ul@tmpbox=\hbox{#1#2}\ul@skipwidth\the\wd\ul@tmpbox
+		\setbox\ul@tmpbox=\hbox{#1}%
+		\advance\ul@skipwidth -\the\wd\ul@tmpbox
+		\setbox\ul@tmpbox=\hbox{#2}%
+		\advance\ul@skipwidth -\the\wd\ul@tmpbox
+	\fi \ul@next{#2}%
+}
+%-----------
+\ifx\ul@insty\undefined \makeatother \fi
