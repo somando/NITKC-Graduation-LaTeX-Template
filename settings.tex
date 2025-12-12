@@ -48,9 +48,15 @@
 % 数式・図表番号
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\counterwithout{equation}{chapter}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{footnote}{chapter}
+
 \renewcommand{\theequation}{\arabic{equation}}
 \renewcommand{\thefigure}{\arabic{figure}}
 \renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefootnote}{\arabic{footnote}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
