@@ -19,7 +19,7 @@ platex:
         echo "No tex file found. Compile skipping...";
         exit 0;
       fi
-    - tlmgr install latexmk biblatex biber
+    - tlmgr install latexmk biblatex biber algorithms algorithmicx
     - latexmk -pdfdvi -interaction=nonstopmode -shell-escape main.tex
     - latexmk -c main.tex
   artifacts:

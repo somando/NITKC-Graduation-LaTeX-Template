@@ -58,6 +58,15 @@
 \renewcommand{\thetable}{\arabic{table}}
 \renewcommand{\thefootnote}{\arabic{footnote}}
 
+\makeatletter
+\AtBeginDocument{%
+  \@ifundefined{c@lstlisting}{}{%
+    \counterwithout{lstlisting}{chapter}%
+    \renewcommand{\thelstlisting}{\arabic{lstlisting}}%
+  }%
+}
+\makeatother
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 目次ページ
@@ -124,6 +133,18 @@
   {\sffamily\fontsize{12pt}{16pt}\bfseries}
   {\thesubsection}{1em}{}
 \titlespacing*{\subsection}{0pt}{18pt}{6pt}
+
+% source code
+\floatname{algorithm}{アルゴリズム}
+\renewcommand{\lstlistingname}{プログラム}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 付録
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\appendixname}{付録}
+\renewcommand{\appendixtocname}{付録}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
