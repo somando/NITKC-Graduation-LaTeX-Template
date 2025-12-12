@@ -2,7 +2,7 @@ FROM paperist/texlive-ja:latest
 
 WORKDIR /workdir
 
-RUN tlmgr install latexmk biblatex biber
+RUN tlmgr install latexmk biblatex biber algorithms algorithmicx
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 

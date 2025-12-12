@@ -34,7 +34,7 @@ jobs:
       - name: Setup TeX tools
         if: steps.texcheck.outputs.found == 'true'
         run: |
-          tlmgr install latexmk biblatex biber
+          tlmgr install latexmk biblatex biber algorithms algorithmicx
 
       - name: Compile LaTeX with latexmk
         if: steps.texcheck.outputs.found == 'true'
